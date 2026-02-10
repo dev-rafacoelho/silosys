@@ -88,6 +88,6 @@ export async function middleware(request) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|fundo-login.jpg).*)",
+    "/((?!_next/static|_next/image|favicon.ico|fundo-login.jpg|fundo-login.jpeg|fundo.jpeg|logo.svg).*)",
   ],
 }

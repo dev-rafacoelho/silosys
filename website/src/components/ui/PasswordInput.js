@@ -8,10 +8,10 @@ export default function PasswordInput({ className = "", ...props }) {
     const [visible, setVisible] = useState(false)
 
     return (
-        <div className={`relative ${className}`.trim()}>
+        <div className="relative">
             <Input
                 type={visible ? "text" : "password"}
-                className="pr-12"
+                className={`pr-12 ${className}`.trim()}
                 {...props}
             />
             <button

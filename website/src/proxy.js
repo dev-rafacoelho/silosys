@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 const ROTAS_PUBLICAS = ["/login", "/registro"]
 const COOKIE_ACCESS = "access_token"
 const COOKIE_REFRESH = "refresh_token"

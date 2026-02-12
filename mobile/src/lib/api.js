@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getToken, getRefreshToken, saveTokens } from "./storage";
 
-// Altere para a URL da sua API (em dispositivo físico use o IP da máquina, ex: http://192.168.1.10:8000)
+
 const API_URL = "http://localhost:8000";
 
 export const api = axios.create({

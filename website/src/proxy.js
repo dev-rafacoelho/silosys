@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
 const ROTAS_PUBLICAS = ["/login", "/registro"]
 const COOKIE_ACCESS = "access_token"
 const COOKIE_REFRESH = "refresh_token"
@@ -122,6 +122,6 @@ export async function proxy(request) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|_next/data|auth/|.*\\.(?:svg|jpg|jpeg|png|gif|ico|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|_next/data|.*\\.(?:svg|jpg|jpeg|png|gif|ico|webp)$).*)",
   ],
 }

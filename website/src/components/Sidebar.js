@@ -10,7 +10,7 @@ import {
 } from "@phosphor-icons/react"
 
 const NAV_ITEMS = [
-  { href: "/", icon: Warehouse, label: "Início" },
+  { href: "/armazem", icon: Warehouse, label: "Armazém" },
   { href: "/documentos", icon: FileText, label: "Documentos" },
   { href: "/movimentacoes", icon: ArrowsLeftRight, label: "Movimentações" },
 ]
@@ -45,7 +45,7 @@ export default function Sidebar() {
             const activeIndex = NAV_ITEMS.findIndex(
               (item) =>
                 pathname === item.href ||
-                (item.href !== "/" && pathname.startsWith(item.href))
+                (item.href !== "/armazem" && pathname.startsWith(item.href))
             )
             const index = activeIndex >= 0 ? activeIndex : 0
             const itemHeight = 48

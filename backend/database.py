@@ -2,6 +2,7 @@ import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from models.armazen import Armazen
 from models.usuario import Base
 
 DATABASE_URL = os.getenv(
@@ -22,4 +23,5 @@ def get_db():
 
 
 def init_db():
+    _ = Armazen
     Base.metadata.create_all(bind=engine)

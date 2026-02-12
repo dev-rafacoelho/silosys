@@ -1,10 +1,8 @@
 import axios from "axios"
 import { getCookie, COOKIE_ACCESS, COOKIE_REFRESH, saveTokens } from "./auth"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
-
 export const api = axios.create({
-  baseURL: API_URL,
+  baseURL: "",
   headers: {
     "Content-Type": "application/json",
   },
@@ -35,9 +33,9 @@ api.interceptors.response.use(
       if (refreshToken) {
         try {
           const { data } = await axios.post(
-            `${API_URL}/auth/refresh_token`,
+            "/auth/refresh_token",
             { refresh_token: refreshToken },
-            { headers: { "Content-Type": "application/json" } },
+            { headers: { "Content-Type": "application/json" }, baseURL: "" },
           )
           saveTokens(data.access_token, refreshToken, data.expires_in)
           originalRequest.headers.Authorization = `Bearer ${data.access_token}`

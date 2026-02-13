@@ -3,6 +3,8 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models.armazen import Armazen
+from models.contrato import Contrato
+from models.grao import Grao
 from models.usuario import Base
 
 DATABASE_URL = os.getenv(
@@ -23,5 +25,5 @@ def get_db():
 
 
 def init_db():
-    _ = Armazen
+    _ = Armazen, Contrato, Grao
     Base.metadata.create_all(bind=engine)

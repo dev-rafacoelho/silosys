@@ -27,3 +27,5 @@ def get_db():
 def init_db():
     _ = Armazen, Contrato, Grao
     Base.metadata.create_all(bind=engine)
+    from seed import seed_graos
+    seed_graos(engine)

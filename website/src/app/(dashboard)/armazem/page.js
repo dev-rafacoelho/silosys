@@ -125,9 +125,7 @@ export default function ArmazemPage() {
             aspectRatio: "625/685",
           }}
         >
-          {carregando ? (
-            <div className="text-gray-500 text-sm">Carregando…</div>
-          ) : temLista ? (
+          {temLista ? (
             <div
               key={currentIndex}
               className="absolute inset-0 flex items-center justify-center group"

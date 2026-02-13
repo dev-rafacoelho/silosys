@@ -8,4 +8,7 @@ export async function criarArmazem(dados) {
   return data
 }
 
-
+export async function listarArmazens(opcoes = {}) {
+  const { data } = await api.get("/armazens", { params: opcoes })
+  return data
+}

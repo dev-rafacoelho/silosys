@@ -11,8 +11,8 @@ import {
 
 const NAV_ITEMS = [
   { href: "/armazem", icon: Warehouse, label: "Armazém" },
-  { href: "/documentos", icon: FileText, label: "Documentos" },
   { href: "/movimentacoes", icon: ArrowsLeftRight, label: "Movimentações" },
+  { href: "/documentos", icon: FileText, label: "Documentos" },
 ]
 
 export default function Sidebar() {
@@ -23,7 +23,6 @@ export default function Sidebar() {
       className="w-[72px] min-h-screen flex flex-col flex-shrink-0"
       style={{ backgroundColor: "#E4FFCC" }}
     >
-      {/* Top: logo */}
       <div className="flex items-center justify-center gap-2 px-3 py-4 flex-shrink-0">
         <Image
           src="/logo.svg"
@@ -34,13 +33,11 @@ export default function Sidebar() {
         />
       </div>
 
-      {/* Nav: white rounded container com indicador deslizante */}
       <nav className="p-2 mt-2">
         <div
           className="relative rounded-2xl bg-white shadow-sm border border-gray-100/80 py-2 flex flex-col items-center gap-1"
           style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
         >
-          {/* Quadrado que desliza até a tab ativa */}
           {(() => {
             const activeIndex = NAV_ITEMS.findIndex(
               (item) =>

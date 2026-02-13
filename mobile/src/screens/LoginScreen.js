@@ -71,7 +71,6 @@ export default function LoginScreen({ onLoginSuccess }) {
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.card}>
-              {/* Logo SiloSys */}
               <View style={styles.logoRow}>
                 <LogoSiloSys width={48} height={64} />
                 <Text style={styles.titulo}>SiloSys</Text>

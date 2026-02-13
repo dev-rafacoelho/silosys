@@ -2,10 +2,6 @@
 
 import { useEffect } from "react"
 
-/**
- * Modal reutilizável com título, área de conteúdo e dois botões (Cancelar / Salvar).
- * Padrão para formulários em diálogo.
- */
 export default function Modal({
   open,
   onClose,
@@ -43,14 +39,12 @@ export default function Modal({
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/40"
         onClick={handleCancel}
         aria-hidden="true"
       />
 
-      {/* Conteúdo do modal */}
       <div
         className="relative w-full max-w-md rounded-2xl shadow-xl p-6 flex flex-col gap-5"
         style={{ backgroundColor: "#f0f9e8" }}

@@ -44,7 +44,6 @@ api.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
           return api(originalRequest);
         } catch {
-          // Refresh falhou; o app deve redirecionar para login (tratado pelo chamador)
         }
       }
     }

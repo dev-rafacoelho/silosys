@@ -46,7 +46,6 @@ export default function Login() {
         aria-hidden
       />
       <div className="relative z-10 w-full max-w-md bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/80 p-8">
-        {/* Logo SiloSys */}
         <div className="flex items-center gap-3 mb-2">
           <Image
             src="/logo.svg"
@@ -71,7 +70,6 @@ export default function Login() {
         )}
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          {/* Campo E-mail */}
           <div className="relative">
             <Envelope
               size={22}
@@ -90,7 +88,6 @@ export default function Login() {
             />
           </div>
 
-          {/* Campo Senha */}
           <div className="relative">
             <Lock
               size={22}

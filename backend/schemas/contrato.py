@@ -26,6 +26,7 @@ class ContratoResponse(BaseModel):
     usuario_id: int
     empresa: str
     grao_id: int
+    grao_nome: str = ""
     vencimento: date
     valor: int
     data_pagamento: date | None

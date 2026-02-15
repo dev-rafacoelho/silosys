@@ -12,7 +12,7 @@ import {
 const NAV_ITEMS = [
   { href: "/armazem", icon: Warehouse, label: "Armazém" },
   { href: "/movimentacoes", icon: ArrowsLeftRight, label: "Movimentações" },
-  { href: "/documentos", icon: FileText, label: "Documentos" },
+  { href: "/contratos", icon: FileText, label: "Contratos" },
 ]
 
 export default function Sidebar() {

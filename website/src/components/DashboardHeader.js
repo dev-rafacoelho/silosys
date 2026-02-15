@@ -11,7 +11,7 @@ import {
 const TAB_CONFIG = [
   { path: "/armazem", title: "Armazém", icon: Warehouse },
   { path: "/movimentacoes", title: "Movimentações", icon: ArrowsLeftRight },
-  { path: "/documentos", title: "Documentos", icon: FileText },
+  { path: "/contratos", title: "Contratos", icon: FileText },
 ]
 
 function getTabForPath(pathname) {

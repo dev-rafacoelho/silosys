@@ -21,7 +21,7 @@ def listar(
     db: Session = Depends(get_db),
     usuario: Usuario = Depends(get_current_user),
     skip: int = Query(0, ge=0),
-    limit: int = Query(50, ge=1, le=100),
+    limit: int = Query(50, ge=1, le=999),
 ):
     return (
         db.query(Contrato)

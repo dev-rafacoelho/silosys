@@ -7,6 +7,7 @@ from database import init_db
 from routers.armazens import router as armazens_router
 from routers.auth import router as auth_router
 from routers.contratos import router as contratos_router
+from routers.graos import router as graos_router
 
 
 @asynccontextmanager
@@ -28,3 +29,4 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(armazens_router)
 app.include_router(contratos_router)
+app.include_router(graos_router)

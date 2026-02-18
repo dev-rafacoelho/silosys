@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Envelope, Lock } from "@phosphor-icons/react"
-import { Input, PasswordInput } from "@/components/ui"
+import { Input, PasswordInput, Skeleton } from "@/components/ui"
 import { login } from "@/lib/auth"
 
 export default function Login() {
@@ -110,7 +110,13 @@ export default function Login() {
             disabled={loading}
             className="w-full py-3.5 mt-2 rounded-xl bg-[#BCEB3C] hover:bg-[#a8d334] disabled:opacity-70 disabled:cursor-not-allowed text-gray-800 font-semibold transition-all shadow-md"
           >
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? (
+              <span className="inline-flex items-center justify-center gap-2">
+                <Skeleton className="h-4 w-16 rounded" />
+              </span>
+            ) : (
+              "Entrar"
+            )}
           </button>
         </form>
       </div>

@@ -2,9 +2,12 @@ import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from models.adicao import Adicao
 from models.armazen import Armazen
 from models.contrato import Contrato
 from models.grao import Grao
+from models.retirada import Retirada
+from models.talhao import Talhao
 from models.usuario import Base
 
 DATABASE_URL = os.getenv(
@@ -25,7 +28,8 @@ def get_db():
 
 
 def init_db():
-    _ = Armazen, Contrato, Grao
+    _ = Adicao, Armazen, Contrato, Grao, Retirada, Talhao
     Base.metadata.create_all(bind=engine)
-    from seed import seed_graos
+    from seed import seed_graos, seed_talhoes
     seed_graos(engine)
+    seed_talhoes(engine)

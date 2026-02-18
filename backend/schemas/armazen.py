@@ -16,6 +16,8 @@ class ArmazenResponse(BaseModel):
     usuario_id: int
     capacidade: int
     nome: str
+    estoque: int = 0
+    grao_id: int | None = None
 
     class Config:
         from_attributes = True

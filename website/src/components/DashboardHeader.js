@@ -1,12 +1,15 @@
 "use client"
 
+import { useEffect, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
 import {
   ArrowsLeftRight,
   FileText,
+  SignOut,
   User,
   Warehouse,
 } from "@phosphor-icons/react"
+import { logout } from "@/lib/auth"
 
 const TAB_CONFIG = [
   { path: "/armazem", title: "Armazém", icon: Warehouse },
@@ -24,6 +27,19 @@ function getTabForPath(pathname) {
 export default function DashboardHeader() {
   const pathname = usePathname()
   const { title, icon: Icon } = getTabForPath(pathname)
+  const [menuAberto, setMenuAberto] = useState(false)
+  const menuRef = useRef(null)
+
+  useEffect(() => {
+    if (!menuAberto) return
+    function handleClickFora(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuAberto(false)
+      }
+    }
+    document.addEventListener("click", handleClickFora)
+    return () => document.removeEventListener("click", handleClickFora)
+  }, [menuAberto])
 
   return (
     <header
@@ -39,13 +55,37 @@ export default function DashboardHeader() {
         </div>
         <h1 className="text-xl font-bold text-gray-800">{title}</h1>
       </div>
-      <button
-        type="button"
-        className="w-10 h-10 rounded-full flex items-center justify-center border border-gray-300 cursor-pointer bg-white"
-        aria-label="Perfil"
-      >
-        <User size={22} weight="regular" className="text-gray-600" />
-      </button>
+      <div className="relative" ref={menuRef}>
+        <button
+          type="button"
+          onClick={() => setMenuAberto((a) => !a)}
+          className="w-10 h-10 rounded-full flex items-center justify-center border border-gray-300 cursor-pointer bg-white hover:bg-gray-50 transition-colors"
+          aria-label="Perfil"
+          aria-expanded={menuAberto}
+          aria-haspopup="true"
+        >
+          <User size={22} weight="regular" className="text-gray-600" />
+        </button>
+        {menuAberto && (
+          <div
+            className="absolute right-0 top-full mt-2 py-1 min-w-[160px] rounded-xl border border-gray-200 bg-white shadow-lg z-50"
+            role="menu"
+          >
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setMenuAberto(false)
+                logout()
+              }}
+              className="w-full flex items-center gap-2 px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-100 rounded-lg mx-1 transition-colors"
+            >
+              <SignOut size={20} weight="regular" className="text-gray-500 flex-shrink-0" />
+              Sair
+            </button>
+          </div>
+        )}
+      </div>
     </header>
   )
 }

@@ -31,6 +31,7 @@ class ContratoResponse(BaseModel):
     valor: int
     data_pagamento: date | None
     quantidade: int
+    quantidade_retirada: int = 0
 
     class Config:
         from_attributes = True

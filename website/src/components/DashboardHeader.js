@@ -48,6 +48,10 @@ export default function DashboardHeader() {
   }, [])
 
   useEffect(() => {
+    setFotoErro(false)
+  }, [fotoPerfil])
+
+  useEffect(() => {
     if (!menuAberto) return
     function handleClickFora(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -59,6 +63,8 @@ export default function DashboardHeader() {
   }, [menuAberto])
 
   const fotoSrc = srcFotoPerfil(fotoPerfil)
+  const [fotoErro, setFotoErro] = useState(false)
+  const mostrarFoto = fotoSrc && !fotoErro
 
   return (
     <header
@@ -83,11 +89,12 @@ export default function DashboardHeader() {
           aria-expanded={menuAberto}
           aria-haspopup="true"
         >
-          {fotoSrc ? (
+          {mostrarFoto ? (
             <img
               src={fotoSrc}
               alt="Foto de perfil"
               className="w-full h-full object-cover"
+              onError={() => setFotoErro(true)}
             />
           ) : (
             <User size={22} weight="regular" className="text-gray-600" />

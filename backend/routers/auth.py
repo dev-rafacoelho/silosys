@@ -12,6 +12,7 @@ from schemas.auth import (
     RefreshTokenRequest,
     RefreshTokenResponse,
     TokenVerifyResponse,
+    UsuarioResponse,
 )
 from auth import (
     hash_senha,
@@ -84,6 +85,16 @@ def registro(request: RegistroRequest, db: Session = Depends(get_db)):
         access_token=access_token,
         refresh_token=refresh_token,
         expires_in=expires_in,
+    )
+
+
+@router.get("/me", response_model=UsuarioResponse)
+def me(usuario: Usuario = Depends(get_current_user)):
+    return UsuarioResponse(
+        id=usuario.id,
+        nome=usuario.nome,
+        email=usuario.email,
+        foto_perfil=usuario.foto_perfil,
     )
 
 

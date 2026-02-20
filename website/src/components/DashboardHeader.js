@@ -9,6 +9,7 @@ import {
   User,
   Warehouse,
 } from "@phosphor-icons/react"
+import api from "@/lib/api"
 import { logout } from "@/lib/auth"
 
 const TAB_CONFIG = [
@@ -24,11 +25,27 @@ function getTabForPath(pathname) {
   return tab ?? TAB_CONFIG[0]
 }
 
+function srcFotoPerfil(fotoPerfil) {
+  if (!fotoPerfil || typeof fotoPerfil !== "string") return null
+  const s = fotoPerfil.trim()
+  if (!s) return null
+  if (s.startsWith("data:")) return s
+  return `data:image/jpeg;base64,${s}`
+}
+
 export default function DashboardHeader() {
   const pathname = usePathname()
   const { title, icon: Icon } = getTabForPath(pathname)
   const [menuAberto, setMenuAberto] = useState(false)
+  const [fotoPerfil, setFotoPerfil] = useState(null)
   const menuRef = useRef(null)
+
+  useEffect(() => {
+    api.get("/auth/me").then((res) => {
+      const foto = res.data?.foto_perfil
+      if (foto) setFotoPerfil(foto)
+    }).catch(() => {})
+  }, [])
 
   useEffect(() => {
     if (!menuAberto) return
@@ -40,6 +57,8 @@ export default function DashboardHeader() {
     document.addEventListener("click", handleClickFora)
     return () => document.removeEventListener("click", handleClickFora)
   }, [menuAberto])
+
+  const fotoSrc = srcFotoPerfil(fotoPerfil)
 
   return (
     <header
@@ -59,12 +78,20 @@ export default function DashboardHeader() {
         <button
           type="button"
           onClick={() => setMenuAberto((a) => !a)}
-          className="w-10 h-10 rounded-full flex items-center justify-center border border-gray-300 cursor-pointer bg-white hover:bg-gray-50 transition-colors"
+          className="w-10 h-10 rounded-full flex items-center justify-center border border-gray-300 cursor-pointer bg-white hover:bg-gray-50 transition-colors overflow-hidden shrink-0"
           aria-label="Perfil"
           aria-expanded={menuAberto}
           aria-haspopup="true"
         >
-          <User size={22} weight="regular" className="text-gray-600" />
+          {fotoSrc ? (
+            <img
+              src={fotoSrc}
+              alt="Foto de perfil"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <User size={22} weight="regular" className="text-gray-600" />
+          )}
         </button>
         {menuAberto && (
           <div

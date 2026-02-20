@@ -25,13 +25,18 @@ def _nao_deletado_retirada():
 
 
 def _estoque_armazen(db: Session, armazen_id: int, excluir_adicao_id: int | None = None) -> int:
-    q = db.query(func.coalesce(func.sum(Adicao.quantidade), 0)).filter(
+    q_bruto = db.query(func.coalesce(func.sum(Adicao.peso_bruto), 0)).filter(
+        Adicao.armazen_id == armazen_id,
+        _nao_deletado_adicao(),
+    )
+    q_tara = db.query(func.coalesce(func.sum(Adicao.tara), 0)).filter(
         Adicao.armazen_id == armazen_id,
         _nao_deletado_adicao(),
     )
     if excluir_adicao_id is not None:
-        q = q.filter(Adicao.id != excluir_adicao_id)
-    total_entrada = int(q.scalar() or 0)
+        q_bruto = q_bruto.filter(Adicao.id != excluir_adicao_id)
+        q_tara = q_tara.filter(Adicao.id != excluir_adicao_id)
+    total_entrada = int(q_bruto.scalar() or 0) - int(q_tara.scalar() or 0)
     bruto = (
         db.query(func.coalesce(func.sum(Retirada.peso_bruto), 0))
         .filter(Retirada.armazen_id == armazen_id, _nao_deletado_retirada())
@@ -155,12 +160,12 @@ def criar(
 ):
     _validar_talhao(db, body.talhao_id)
     _validar_grao_unico_por_armazen(db, body.armazen_id, body.grao_id)
-    _validar_capacidade_armazen(db, usuario.id, body.armazen_id, body.quantidade)
+    quantidade = body.peso_bruto - body.tara
+    _validar_capacidade_armazen(db, usuario.id, body.armazen_id, quantidade)
     adicao = Adicao(
         usuario_id=usuario.id,
         armazen_id=body.armazen_id,
         grao_id=body.grao_id,
-        quantidade=body.quantidade,
         placa=body.placa,
         umidade=body.umidade,
         tara=body.tara,
@@ -195,12 +200,14 @@ def atualizar(
     data = body.model_dump(exclude_unset=True)
     armazen_id = data.get("armazen_id", adicao.armazen_id)
     grao_id = data.get("grao_id", adicao.grao_id)
-    quantidade = data.get("quantidade", adicao.quantidade)
+    peso_bruto = data.get("peso_bruto", adicao.peso_bruto)
+    tara = data.get("tara", adicao.tara)
+    quantidade = peso_bruto - tara
     if "talhao_id" in data:
         _validar_talhao(db, data.get("talhao_id"))
     if "armazen_id" in data or "grao_id" in data:
         _validar_grao_unico_por_armazen(db, armazen_id, grao_id, excluir_adicao_id=adicao.id)
-    if "armazen_id" in data or "quantidade" in data:
+    if "armazen_id" in data or "peso_bruto" in data or "tara" in data:
         _validar_capacidade_armazen(db, usuario.id, armazen_id, quantidade, excluir_adicao_id=adicao.id)
     for k, v in data.items():
         setattr(adicao, k, v)

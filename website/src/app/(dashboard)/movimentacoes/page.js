@@ -102,7 +102,6 @@ function ModalAdicionarEstoque({ aberto, onFechar, onSalvo }) {
   const [form, setForm] = useState({
     armazen_id: "",
     grao_id: "",
-    quantidade: "",
     peso_bruto: "",
     tara: "",
     placa: "",
@@ -117,7 +116,6 @@ function ModalAdicionarEstoque({ aberto, onFechar, onSalvo }) {
     setForm({
       armazen_id: "",
       grao_id: "",
-      quantidade: "",
       peso_bruto: "",
       tara: "",
       placa: "",
@@ -139,31 +137,48 @@ function ModalAdicionarEstoque({ aberto, onFechar, onSalvo }) {
       .finally(() => setLoadingDados(false))
   }, [aberto])
 
-  const handleChange = (campo, valor) => setForm((f) => ({ ...f, [campo]: valor }))
+  const handleChange = (campo, valor) => {
+    setForm((f) => {
+      const next = { ...f, [campo]: valor }
+      if (campo === "armazen_id" && valor) {
+        const arm = armazens.find((a) => String(a.id) === String(valor))
+        if (arm?.grao_id) next.grao_id = String(arm.grao_id)
+        else next.grao_id = ""
+      }
+      return next
+    })
+  }
+
+  const armazenSelecionado = armazens.find((a) => String(a.id) === String(form.armazen_id))
+  const graoTravado = !!(armazenSelecionado?.grao_id)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     setErro("")
     const armazenId = form.armazen_id ? Number(form.armazen_id) : 0
     const graoId = form.grao_id ? Number(form.grao_id) : 0
-    const quantidade = form.quantidade ? Number(form.quantidade) : 0
     if (!armazenId || !graoId) {
       setErro("Selecione o armazém e o grão.")
       return
     }
-    if (quantidade < 0) {
-      setErro("Quantidade deve ser maior ou igual a zero.")
+    const pesoBruto = form.peso_bruto ? Number(form.peso_bruto) : 0
+    const taraVal = form.tara ? Number(form.tara) : 0
+    if (!form.peso_bruto && form.peso_bruto !== 0) {
+      setErro("Informe o peso bruto.")
+      return
+    }
+    if (!form.tara && form.tara !== 0) {
+      setErro("Informe a tara.")
       return
     }
     setLoading(true)
     const payload = {
       armazen_id: armazenId,
       grao_id: graoId,
-      quantidade,
       placa: form.placa || null,
       umidade: form.umidade ? Number(form.umidade) : null,
-      tara: form.tara ? Number(form.tara) : null,
-      peso_bruto: form.peso_bruto ? Number(form.peso_bruto) : null,
+      tara: taraVal,
+      peso_bruto: pesoBruto,
       desconto: form.desconto ? Number(form.desconto) : null,
       talhao_id: form.talhao_id ? Number(form.talhao_id) : null,
     }
@@ -239,7 +254,7 @@ function ModalAdicionarEstoque({ aberto, onFechar, onSalvo }) {
                 <select
                   value={form.grao_id}
                   onChange={(e) => handleChange("grao_id", e.target.value)}
-                  disabled={loading}
+                  disabled={loading || graoTravado}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:outline-none focus:border-gray-400 disabled:opacity-70"
                 >
                   <option value="" disabled>Selecione o grão</option>
@@ -250,17 +265,6 @@ function ModalAdicionarEstoque({ aberto, onFechar, onSalvo }) {
                   ))}
                 </select>
               )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Quantidade (Kg)</label>
-              <Input
-                type="number"
-                min={0}
-                placeholder="Ex: 10000"
-                value={form.quantidade}
-                onChange={(e) => handleChange("quantidade", e.target.value)}
-                disabled={loading}
-              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Peso Bruto (Kg)</label>

@@ -10,7 +10,7 @@ export const STORAGE_REFRESH = "refresh_token";
 
 export async function login(email, senha) {
   const { data } = await api.post("/auth/login", { email, senha });
-  await saveTokensStorage(data.access_token, data.refresh_token);
+  await saveTokensStorage(data.access_token, data.refresh_token, data.expires_in);
   return data;
 }
 

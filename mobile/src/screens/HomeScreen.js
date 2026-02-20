@@ -1,25 +1,47 @@
+import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { logout } from "../lib/auth";
+import AppHeader from "../components/AppHeader";
+import ArmazenScreen from "./ArmazenScreen";
+import ContratosScreen from "./ContratosScreen";
+import MovimentacoesScreen from "./MovimentacoesScreen";
+
+const ABAS = [
+  { key: "armazem", title: "Armazém", icon: "business-outline" },
+  { key: "movimentacoes", title: "Movimentações", icon: "swap-horizontal-outline" },
+  { key: "contratos", title: "Contratos", icon: "document-text-outline" },
+];
 
 export default function HomeScreen({ onLogout }) {
-  const handleLogout = async () => {
-    await logout();
-    onLogout?.();
-  };
+  const [abaAtiva, setAbaAtiva] = useState(0);
+  const titulo = ABAS[abaAtiva].title;
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.titulo}>SiloSys</Text>
-        <TouchableOpacity onPress={handleLogout} style={styles.botaoSair}>
-          <Ionicons name="log-out-outline" size={24} color="#374151" />
-          <Text style={styles.botaoSairTexto}>Sair</Text>
-        </TouchableOpacity>
-      </View>
+      <AppHeader title={titulo} onLogout={onLogout} />
       <View style={styles.content}>
-        <Text style={styles.welcome}>Bem-vindo ao SiloSys</Text>
-        <Text style={styles.subtitle}>Você está logado.</Text>
+        {abaAtiva === 0 && <ArmazenScreen />}
+        {abaAtiva === 1 && <MovimentacoesScreen />}
+        {abaAtiva === 2 && <ContratosScreen />}
+      </View>
+      <View style={styles.tabs}>
+        {ABAS.map((aba, index) => (
+          <TouchableOpacity
+            key={aba.key}
+            style={[styles.tab, index === abaAtiva && styles.tabAtivo]}
+            onPress={() => setAbaAtiva(index)}
+            activeOpacity={0.8}
+          >
+            <Ionicons
+              name={aba.icon}
+              size={24}
+              color={index === abaAtiva ? "#fff" : "#6b7280"}
+            />
+            <Text style={[styles.tabTexto, index === abaAtiva && styles.tabTextoAtivo]}>
+              {aba.title}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );
@@ -28,48 +50,37 @@ export default function HomeScreen({ onLogout }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9fafb",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 56,
-    paddingBottom: 16,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#e5e7eb",
-  },
-  titulo: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#1f2937",
-  },
-  botaoSair: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  botaoSairTexto: {
-    fontSize: 15,
-    color: "#374151",
+    backgroundColor: "#F7F9F3",
   },
   content: {
     flex: 1,
-    padding: 20,
+  },
+  tabs: {
+    flexDirection: "row",
+    borderTopWidth: 1,
+    borderTopColor: "#e5e7eb",
+    backgroundColor: "#fff",
+    paddingBottom: 24,
+    paddingTop: 8,
+  },
+  tab: {
+    flex: 1,
+    alignItems: "center",
     justifyContent: "center",
+    paddingVertical: 10,
   },
-  welcome: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#1f2937",
-    marginBottom: 8,
+  tabAtivo: {
+    backgroundColor: "#E4FFCC",
+    marginHorizontal: 4,
+    borderRadius: 12,
   },
-  subtitle: {
-    fontSize: 16,
+  tabTexto: {
+    fontSize: 12,
     color: "#6b7280",
+    marginTop: 4,
+  },
+  tabTextoAtivo: {
+    color: "#166534",
+    fontWeight: "600",
   },
 });

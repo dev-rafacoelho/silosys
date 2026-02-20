@@ -1,8 +1,16 @@
 import axios from "axios";
-import { getToken, getRefreshToken, saveTokens } from "./storage";
+import Constants from "expo-constants";
+import { getToken, getRefreshToken, saveTokens, clearTokens } from "./storage";
 
+const API_URL =
+  Constants.expoConfig?.extra?.apiUrl ??
+  Constants.manifest?.extra?.apiUrl ??
+  "http://localhost:8000";
 
-const API_URL = "http://localhost:8000";
+let _onAuthFail = null;
+export function setOnAuthFail(cb) {
+  _onAuthFail = cb;
+}
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -44,7 +52,12 @@ api.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
           return api(originalRequest);
         } catch {
+          await clearTokens();
+          if (_onAuthFail) _onAuthFail();
         }
+      } else {
+        await clearTokens();
+        if (_onAuthFail) _onAuthFail();
       }
     }
     return Promise.reject(error);

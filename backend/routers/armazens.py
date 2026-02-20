@@ -28,12 +28,19 @@ def _nao_deletado_retirada():
 
 
 def _estoque_armazen(db: Session, armazen_id: int) -> int:
-    total_entrada = int(
-        db.query(func.coalesce(func.sum(Adicao.quantidade), 0))
+    entrada_bruto = int(
+        db.query(func.coalesce(func.sum(Adicao.peso_bruto), 0))
         .filter(Adicao.armazen_id == armazen_id, _nao_deletado_adicao())
         .scalar()
         or 0
     )
+    entrada_tara = int(
+        db.query(func.coalesce(func.sum(Adicao.tara), 0))
+        .filter(Adicao.armazen_id == armazen_id, _nao_deletado_adicao())
+        .scalar()
+        or 0
+    )
+    total_entrada = entrada_bruto - entrada_tara
     bruto = (
         db.query(func.coalesce(func.sum(Retirada.peso_bruto), 0))
         .filter(Retirada.armazen_id == armazen_id, _nao_deletado_retirada())

@@ -1,16 +1,20 @@
 import { StatusBar } from "expo-status-bar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import LoginScreen from "./src/screens/LoginScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import { isAuthenticated } from "./src/lib/auth";
+import { setOnAuthFail } from "./src/lib/api";
 
 export default function App() {
   const [logado, setLogado] = useState(null);
 
+  const handleAuthFail = useCallback(() => setLogado(false), []);
+
   useEffect(() => {
+    setOnAuthFail(handleAuthFail);
     isAuthenticated().then(setLogado);
-  }, []);
+  }, [handleAuthFail]);
 
   if (logado === null) {
     return (

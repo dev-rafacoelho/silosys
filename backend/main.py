@@ -9,6 +9,7 @@ from routers.armazens import router as armazens_router
 from routers.auth import router as auth_router
 from routers.contratos import router as contratos_router
 from routers.graos import router as graos_router
+from routers.relatorios import router as relatorios_router
 from routers.retiradas import router as retiradas_router
 from routers.talhao import router as talhoes_router
 
@@ -34,5 +35,6 @@ app.include_router(auth_router)
 app.include_router(armazens_router)
 app.include_router(contratos_router)
 app.include_router(graos_router)
+app.include_router(relatorios_router)
 app.include_router(retiradas_router)
 app.include_router(talhoes_router)

@@ -8,6 +8,7 @@ import {
   FileText,
   ArrowsLeftRight,
   Plant,
+  ChartBar,
 } from "@phosphor-icons/react"
 
 const NAV_ITEMS = [
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
   { href: "/movimentacoes", icon: ArrowsLeftRight, label: "Movimentações" },
   { href: "/contratos", icon: FileText, label: "Contratos" },
   { href: "/talhoes", icon: Plant, label: "Talhões" },
+  { href: "/relatorios", icon: ChartBar, label: "Relatórios" },
 ]
 
 export default function Sidebar() {

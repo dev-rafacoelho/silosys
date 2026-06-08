@@ -7,12 +7,14 @@ import {
   Warehouse,
   FileText,
   ArrowsLeftRight,
+  Plant,
 } from "@phosphor-icons/react"
 
 const NAV_ITEMS = [
   { href: "/armazem", icon: Warehouse, label: "Armazém" },
   { href: "/movimentacoes", icon: ArrowsLeftRight, label: "Movimentações" },
   { href: "/contratos", icon: FileText, label: "Contratos" },
+  { href: "/talhoes", icon: Plant, label: "Talhões" },
 ]
 
 export default function Sidebar() {

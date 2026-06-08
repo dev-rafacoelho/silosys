@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Text
+from sqlalchemy import Column, Integer, Numeric, Text
 
 from models.usuario import Base
 
@@ -8,3 +8,4 @@ class Talhao(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(Text, nullable=False)
+    tamanho_hectares = Column(Numeric, nullable=True)
